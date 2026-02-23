@@ -189,7 +189,7 @@ Preprocessing helpers in this repo:
 
 ## Citation
 
-If you use this repository, please cite the paper. A full camera-ready citation block will be added on release:
+If you use this repository, please cite the paper:
 
 ```bibtex
 @inproceedings{
