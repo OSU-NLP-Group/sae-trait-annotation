@@ -1,7 +1,7 @@
 # SAE Trait Annotation for Organismal Images
 
 Official code release for the ICLR 2026 paper:
-**Automatic Image-Level Morphological Trait Annotation for Organismal Images**.
+[Automatic Image-Level Morphological Trait Annotation for Organismal Images](https://openreview.net/pdf?id=oFRbiaib5Q).
 
 ## Overview
 
