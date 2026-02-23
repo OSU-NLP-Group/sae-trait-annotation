@@ -190,10 +190,13 @@ Preprocessing helpers in this repo:
 If you use this repository, please cite the paper. A full camera-ready citation block will be added on release:
 
 ```bibtex
-@inproceedings{trait_annotation_2026,
-  title={Automatic Image-Level Morphological Trait Annotation for Organismal Images},
-  booktitle={International Conference on Learning Representations (ICLR)},
-  year={2026}
+@inproceedings{
+pahuja2026automatic,
+title={Automatic Image-Level Morphological Trait Annotation for Organismal Images},
+author={Vardaan Pahuja and Samuel Stevens and Alyson East and Sydne Record and Yu Su},
+booktitle={The Fourteenth International Conference on Learning Representations},
+year={2026},
+url={https://openreview.net/forum?id=oFRbiaib5Q}
 }
 ```
 
