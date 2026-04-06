@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatic Image-Level Morphological Trait Annotation for Organismal Images</title>
+  <meta name="description" content="ICLR 2026 paper: Automatic Image-Level Morphological Trait Annotation for Organismal Images. We use sparse autoencoders on foundation-model features to generate scalable morphological trait annotations." />
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #1a5276;
+      --accent:    #2e86c1;
+      --accent-lt: #d6eaf8;
+      --green:     #1e8449;
+      --green-lt:  #d5f5e3;
+      --amber:     #b7770d;
+      --amber-lt:  #fef9e7;
+      --bg:        #ffffff;
+      --bg-alt:    #f8f9fa;
+      --border:    #dee2e6;
+      --text:      #212529;
+      --muted:     #6c757d;
+      --radius:    8px;
+      --shadow:    0 2px 12px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 20px rgba(0,0,0,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.65;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 420px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(160deg, #eaf4fb 0%, #f8f9fa 60%, #ffffff 100%);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .hero .venue-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .3rem .9rem;
+      border-radius: 20px;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      color: var(--primary);
+      max-width: 820px;
+      margin: 0 auto 1.8rem;
+      line-height: 1.3;
+    }
+
+    .authors {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: .5rem;
+    }
+
+    .authors a { color: var(--accent); font-weight: 500; }
+
+    .affiliation {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 2.2rem;
+    }
+
+    /* ── Button row ── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .6rem 1.3rem;
+      border-radius: var(--radius);
+      font-size: .9rem;
+      font-weight: 600;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none !important;
+    }
+
+    .btn-primary   { background: var(--accent);   color: #fff; border-color: var(--accent); }
+    .btn-primary:hover { background: var(--primary); border-color: var(--primary); }
+
+    .btn-outline   { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .btn-outline:hover { background: var(--accent-lt); }
+
+    .btn-green     { background: var(--green); color: #fff; border-color: var(--green); }
+    .btn-green:hover { background: #166036; border-color: #166036; }
+
+    .btn-dark      { background: #24292e; color: #fff; border-color: #24292e; }
+    .btn-dark:hover { background: #000; border-color: #000; }
+
+    /* ── Sections ── */
+    section { padding: 4rem 2rem; }
+    section:nth-child(even) { background: var(--bg-alt); }
+
+    .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: .5rem;
+      border-bottom: 3px solid var(--accent-lt);
+      display: inline-block;
+    }
+
+    p { margin-bottom: 1rem; color: var(--text); }
+
+    /* ── Stats strip ── */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2.5rem 0 0;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 2rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      min-width: 160px;
+    }
+
+    .stat-card .num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-card .label {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: .2rem;
+    }
+
+    /* ── Pipeline steps ── */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .pipeline-step {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.25rem;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .pipeline-step .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: .9rem;
+      margin-bottom: .8rem;
+    }
+
+    .pipeline-step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: .5rem;
+    }
+
+    .pipeline-step p { font-size: .9rem; color: var(--muted); margin: 0; }
+
+    /* ── Dataset card ── */
+    .dataset-card {
+      background: linear-gradient(135deg, #eaf4fb 0%, #d5f5e3 100%);
+      border: 1px solid #aed6f1;
+      border-radius: var(--radius);
+      padding: 2rem 2.5rem;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .dataset-card .ds-info { flex: 1 1 280px; }
+    .dataset-card .ds-info h3 {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: .6rem;
+    }
+    .dataset-card .ds-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: .25rem .8rem;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    /* ── Citation ── */
+    .citation-box {
+      position: relative;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .82rem;
+      line-height: 1.75;
+      overflow-x: auto;
+      margin-top: 1.25rem;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: .75rem;
+      right: .75rem;
+      background: #3d3d3d;
+      color: #d4d4d4;
+      border: none;
+      border-radius: 5px;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: background .2s;
+    }
+
+    .copy-btn:hover { background: var(--accent); color: #fff; }
+    .copy-btn.copied { background: var(--green); color: #fff; }
+
+    /* ── Acknowledgments ── */
+    .ack-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .ack-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .9rem 1.25rem;
+      font-size: .9rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .ack-item i { color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,.8);
+      text-align: center;
+      padding: 2rem 2rem;
+      font-size: .85rem;
+    }
+
+    footer a { color: rgba(255,255,255,.9); }
+    footer a:hover { color: #fff; }
+
+    footer .footer-credits {
+      margin-top: .6rem;
+      font-size: .78rem;
+      color: rgba(255,255,255,.55);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .nav-brand { font-size: .8rem; max-width: 200px; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: .8rem; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      section { padding: 3rem 1.25rem; }
+      .dataset-card { padding: 1.5rem 1.25rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">SAE Trait Annotation</span>
+    <ul class="nav-links">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#dataset">Dataset</a></li>
+      <li><a href="#citation">Citation</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <span class="venue-badge">ICLR 2026</span>
+
+  <h1>Automatic Image-Level Morphological Trait Annotation for Organismal Images</h1>
+
+  <p class="authors">
+    <a href="https://vardaanpahuja.github.io/" target="_blank" rel="noopener">Vardaan Pahuja</a>,&nbsp;
+    <a href="https://samuelstevens.me/" target="_blank" rel="noopener">Samuel Stevens</a>,&nbsp;
+    Alyson East,&nbsp;
+    Sydne Record,&nbsp;
+    <a href="https://ysu1989.github.io/" target="_blank" rel="noopener">Yu Su</a>
+  </p>
+  <p class="affiliation">The Ohio State University &nbsp;·&nbsp; University of Maine</p>
+
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://arxiv.org/pdf/2604.01619" target="_blank" rel="noopener">
+      <i class="fas fa-file-pdf"></i> Paper (arXiv)
+    </a>
+    <a class="btn btn-outline" href="https://openreview.net/forum?id=oFRbiaib5Q" target="_blank" rel="noopener">
+      <i class="fas fa-external-link-alt"></i> OpenReview
+    </a>
+    <a class="btn btn-dark" href="https://github.com/OSU-NLP-Group/sae-trait-annotation" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i> Code
+    </a>
+    <a class="btn btn-green" href="https://huggingface.co/datasets/osunlp/bioscan-traits" target="_blank" rel="noopener">
+      <i class="fas fa-database"></i> Dataset
+    </a>
+  </div>
+</header>
+
+<!-- ── Abstract ── -->
+<section id="abstract">
+  <div class="section-inner">
+    <h2>Abstract</h2>
+    <p>
+      Morphological traits are physical characteristics of biological organisms that provide vital clues on how organisms interact with their environment. Yet extracting these traits remains a slow, expert-driven process, limiting their use in large-scale ecological studies. A major bottleneck is the absence of high-quality datasets linking biological images to trait-level annotations.
+    </p>
+    <p>
+      In this work, we demonstrate that <strong>sparse autoencoders trained on foundation-model features yield monosemantic, spatially grounded neurons that consistently activate on meaningful morphological parts</strong>. Leveraging this property, we introduce a trait annotation pipeline that localizes salient regions and uses vision-language prompting to generate interpretable trait descriptions.
+    </p>
+    <p>
+      Using this approach, we construct <strong>Bioscan-Traits</strong>, a dataset of 80K trait annotations spanning 19K insect images from BIOSCAN-5M. Human evaluation confirms the biological plausibility of the generated morphological descriptions. We assess design sensitivity through a comprehensive ablation study. By annotating traits with a modular pipeline rather than prohibitively expensive manual efforts, we offer a scalable way to inject biologically meaningful supervision into foundation models, enable large-scale morphological analyses, and bridge the gap between ecological relevance and machine-learning practicality.
+    </p>
+
+    <!-- Key stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <span class="num">80K</span>
+        <span class="label">Trait annotations</span>
+      </div>
+      <div class="stat-card">
+        <span class="num">19K</span>
+        <span class="label">Insect images</span>
+      </div>
+      <div class="stat-card">
+        <span class="num">DINOv2</span>
+        <span class="label">Vision backbone</span>
+      </div>
+      <div class="stat-card">
+        <span class="num">SAE</span>
+        <span class="label">Sparse autoencoders</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Method ── -->
+<section id="method">
+  <div class="section-inner">
+    <h2>Method</h2>
+    <p>
+      Our end-to-end pipeline combines sparse autoencoder (SAE) analysis of vision-model activations with multimodal language model inference to produce interpretable, image-level morphological descriptions at scale.
+    </p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-num">1</div>
+        <h3>Data Preprocessing</h3>
+        <p>Convert BIOSCAN-5M into a standardized ImageFolder layout, grouping images by taxonomic species.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">2</div>
+        <h3>Activation Extraction</h3>
+        <p>Dump patch-level activations from DINOv2 ViT-B/14 at the penultimate layer for all training images.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">3</div>
+        <h3>SAE Training</h3>
+        <p>Train a sparse autoencoder on the extracted activations to learn monosemantic, spatially grounded neurons.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">4</div>
+        <h3>Latent Selection</h3>
+        <p>Identify species-level prominent latent features that consistently activate on meaningful morphological parts.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">5</div>
+        <h3>Region Localization</h3>
+        <p>Map active SAE neurons back to image patches to localize salient anatomical regions of interest.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">6</div>
+        <h3>Trait Generation</h3>
+        <p>Prompt Qwen2.5-VL-72B with localized patches to generate natural-language morphological trait descriptions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Dataset ── -->
+<section id="dataset">
+  <div class="section-inner">
+    <h2>Dataset: Bioscan-Traits</h2>
+    <p>
+      We release <strong>Bioscan-Traits</strong>, a large-scale morphological trait dataset for insects, constructed automatically using our pipeline and validated by human experts for biological plausibility.
+    </p>
+
+    <div class="dataset-card">
+      <div class="ds-info">
+        <h3>&#x1F917; osunlp/bioscan-traits</h3>
+        <p style="color:var(--text); font-size:.92rem; margin-bottom:.5rem;">
+          Available on Hugging Face. Built on top of the BIOSCAN-5M insect image collection, each annotation links an image region to an interpretable morphological trait description generated by our pipeline.
+        </p>
+        <div class="ds-stats">
+          <span class="tag">80K annotations</span>
+          <span class="tag">19K images</span>
+          <span class="tag">Insect morphology</span>
+          <span class="tag">BIOSCAN-5M base</span>
+          <span class="tag">Human-validated</span>
+        </div>
+        <div style="margin-top:1.25rem;">
+          <a class="btn btn-green" href="https://huggingface.co/datasets/osunlp/bioscan-traits" target="_blank" rel="noopener">
+            <i class="fas fa-database"></i> Download Dataset
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Citation ── -->
+<section id="citation">
+  <div class="section-inner">
+    <h2>Citation</h2>
+    <p>If you find this work useful, please cite our paper:</p>
+
+    <div class="citation-box" id="bibtex-block">
+      <button class="copy-btn" id="copy-btn" onclick="copyBibtex()">
+        <i class="fas fa-copy"></i> Copy
+      </button>
+<pre>@inproceedings{pahuja2026automatic,
+  title     = {Automatic Image-Level Morphological Trait Annotation
+               for Organismal Images},
+  author    = {Pahuja, Vardaan and Stevens, Samuel and East, Alyson
+               and Record, Sydne and Su, Yu},
+  booktitle = {The Fourteenth International Conference on
+               Learning Representations},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=oFRbiaib5Q}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ── Acknowledgments ── -->
+<section id="acknowledgments">
+  <div class="section-inner">
+    <h2>Acknowledgments</h2>
+    <p>We gratefully acknowledge the following projects and communities whose work made this research possible:</p>
+    <div class="ack-grid">
+      <div class="ack-item">
+        <i class="fas fa-code-branch"></i>
+        <span><a href="https://github.com/OSU-NLP-Group/saev" target="_blank" rel="noopener">SAEV</a> &mdash; sparse autoencoder training infrastructure</span>
+      </div>
+      <div class="ack-item">
+        <i class="fas fa-leaf"></i>
+        <span><a href="https://github.com/Imageomics/bioclip" target="_blank" rel="noopener">BioCLIP</a> &mdash; downstream training and evaluation tooling</span>
+      </div>
+      <div class="ack-item">
+        <i class="fas fa-bug"></i>
+        <span><a href="https://github.com/bioscan-ml/bioscan-5m" target="_blank" rel="noopener">BIOSCAN-5M</a> &mdash; large-scale insect image collection</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>
+    <a href="https://arxiv.org/abs/2604.01619" target="_blank" rel="noopener">Paper</a> &nbsp;|&nbsp;
+    <a href="https://github.com/OSU-NLP-Group/sae-trait-annotation" target="_blank" rel="noopener">Code</a> &nbsp;|&nbsp;
+    <a href="https://huggingface.co/datasets/osunlp/bioscan-traits" target="_blank" rel="noopener">Dataset</a>
+  </p>
+  <p class="footer-credits">
+    Website template adapted from <a href="https://cua-suite.github.io/" target="_blank" rel="noopener">CUA-Suite</a>.
+    &copy; 2026 OSU NLP Group.
+  </p>
+</footer>
+
+<script>
+  /* ── Active nav link on scroll ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  /* ── Copy BibTeX ── */
+  function copyBibtex() {
+    const pre = document.querySelector('#bibtex-block pre');
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
