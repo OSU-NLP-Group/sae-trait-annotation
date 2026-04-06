@@ -395,6 +395,7 @@
       <li><a href="#abstract">Abstract</a></li>
       <li><a href="#method">Method</a></li>
       <li><a href="#dataset">Dataset</a></li>
+      <li><a href="#results">Results</a></li>
       <li><a href="#citation">Citation</a></li>
     </ul>
   </div>
@@ -456,10 +457,10 @@
         <span class="num">DINOv2</span>
         <span class="label">Vision backbone</span>
       </div>
-      <div class="stat-card">
+      <!-- <div class="stat-card">
         <span class="num">SAE</span>
         <span class="label">Sparse autoencoders</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
@@ -505,6 +506,23 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── Results ── -->
+<section id="results">
+  <div class="section-inner">
+    <h2>Results</h2>
+    <p>
+      To validate the utility of <strong>Bioscan-Traits</strong>, we fine-tune BioCLIP on our dataset and evaluate on a held-out insect classification benchmark. Fine-tuning with trait-annotated data yields a <strong>+5.1 percentage-point improvement</strong> in accuracy over the BioCLIP baseline, demonstrating that our automatically generated morphological annotations provide meaningful biological supervision.
+    </p>
+    <figure style="margin-top:1.75rem; text-align:center;">
+      <img src="bioclip_chart.jpg" alt="BioCLIP fine-tuning results on Bioscan-Traits"
+           style="max-width:520px; width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);" />
+      <figcaption style="margin-top:.9rem; font-size:.88rem; color:var(--muted); max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        Fine-tuning BioCLIP on Bioscan-Traits improves classification accuracy from 34.8% to 39.9% on the BIOSCAN-5M insect benchmark.
+      </figcaption>
+    </figure>
   </div>
 </section>
 
