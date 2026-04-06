@@ -4,6 +4,7 @@ Official code release for the ICLR 2026 paper:
 [Automatic Image-Level Morphological Trait Annotation for Organismal Images](https://openreview.net/pdf?id=oFRbiaib5Q).
 
 🌐 Website: [osu-nlp-group.github.io/sae-trait-annotation](https://osu-nlp-group.github.io/sae-trait-annotation/) 
+
 🤗 Dataset: [osunlp/bioscan-traits](https://huggingface.co/datasets/osunlp/bioscan-traits)
 
 ## Overview
