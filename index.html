@@ -468,42 +468,13 @@
 <section id="method">
   <div class="section-inner">
     <h2>Method</h2>
-    <p>
-      Our end-to-end pipeline combines sparse autoencoder (SAE) analysis of vision-model activations with multimodal language model inference to produce interpretable, image-level morphological descriptions at scale.
-    </p>
-
-    <div class="pipeline">
-      <div class="pipeline-step">
-        <div class="step-num">1</div>
-        <h3>Data Preprocessing</h3>
-        <p>Convert BIOSCAN-5M into a standardized ImageFolder layout, grouping images by taxonomic species.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">2</div>
-        <h3>Activation Extraction</h3>
-        <p>Dump patch-level activations from DINOv2 ViT-B/14 at the penultimate layer for all training images.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">3</div>
-        <h3>SAE Training</h3>
-        <p>Train a sparse autoencoder on the extracted activations to learn monosemantic, spatially grounded neurons.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">4</div>
-        <h3>Latent Selection</h3>
-        <p>Identify species-level prominent latent features that consistently activate on meaningful morphological parts.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">5</div>
-        <h3>Region Localization</h3>
-        <p>Map active SAE neurons back to image patches to localize salient anatomical regions of interest.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">6</div>
-        <h3>Trait Generation</h3>
-        <p>Prompt Qwen2.5-VL-72B with localized patches to generate natural-language morphological trait descriptions.</p>
-      </div>
-    </div>
+    <figure style="margin-top:1.5rem; text-align:center;">
+      <img src="figure1.png" alt="Figure 1: Trait annotation pipeline overview"
+           style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);" />
+      <figcaption style="margin-top:.9rem; font-size:.88rem; color:var(--muted); max-width:720px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        <strong>Figure 1.</strong> Given an input specimen image, we first compute dense visual representations using an off-the-shelf backbone (e.g., DINOv2). These features are passed through a pre-trained sparse autoencoder (SAE), which identifies high-activation latent units corresponding to semantically meaningful regions. We extract the spatial masks associated with these activations and overlay them on the original image to localize trait-relevant boxes. Finally, a multimodal language model (MLLM) is prompted with the annotated image to generate fine-grained morphological trait descriptions.
+      </figcaption>
+    </figure>
   </div>
 </section>
 
