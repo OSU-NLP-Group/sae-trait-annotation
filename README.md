@@ -206,9 +206,17 @@ url={https://openreview.net/forum?id=oFRbiaib5Q}
 
 ## Acknowledgments
 
+**Code**
+
 - [SAEV](https://github.com/OSU-NLP-Group/saev) for sparse autoencoder training infrastructure.
 - [BioCLIP](https://github.com/Imageomics/bioclip) for downstream training/evaluation tooling.
 
-We thank colleagues in the OSU NLP group for valuable feedback. This research was supported in part by NSF CAREER \#2443149, NSF OAC 2118240, and an Alfred P. Sloan Foundation Fellowship. We also acknowledge computational resources provided by the Ohio Supercomputer Center.
-This work was in part conceived at [Funcapalooza](https://github.com/Imageomics/FuncaPalooza-2025/wiki/).
-S. Record and A. East were additionally supported by the US National Science Foundation's Award No. 242918 (EPSCOR Research Fellows: NSF: Advancing National Ecological Observatory Network-Enabled Science and Workforce Development at the University of Maine with Artificial Intelligence) and by Hatch project Award \#MEO-022425 from the US Department of Agriculture’s National Institute of Food and Agriculture.
+**Funding**
+
+This research was supported in part by NSF CAREER \#2443149, NSF OAC 2118240, and an Alfred P. Sloan Foundation Fellowship. Computational resources were provided by the Ohio Supercomputer Center.
+
+S. Record and A. East were additionally supported by NSF Award No. 242918 (EPSCOR Research Fellows: Advancing NEON-Enabled Science and Workforce Development at the University of Maine with AI) and Hatch project Award \#MEO-022425 from the USDA National Institute of Food and Agriculture.
+
+**People**
+
+We thank colleagues in the OSU NLP group for valuable feedback. This work was in part conceived at [Funcapalooza](https://github.com/Imageomics/FuncaPalooza-2025/wiki/).
