@@ -1,4 +1,4 @@
-abstract: "Code for automatically generating image-level morphological trait annotations for organismal images using sparse autoencoders on foundation-model features."
+abstract: "Code for automatically generating image-level morphological trait annotations for organismal images using sparse autoencoders on multimodal foundation model features."
 authors:
   - family-names: Pahuja
     given-names: Vardaan
