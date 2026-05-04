@@ -1,0 +1,48 @@
+abstract: "Code for automatically generating image-level morphological trait annotations for organismal images using sparse autoencoders on foundation-model features."
+authors:
+  - family-names: Pahuja
+    given-names: Vardaan
+  - family-names: Stevens
+    given-names: Samuel
+  - family-names: East
+    given-names: Alyson
+  - family-names: Record
+    given-names: Sydne
+  - family-names: Su
+    given-names: Yu
+cff-version: 1.2.0
+date-released: "2026-05-04"
+keywords:
+  - sparse autoencoders
+  - morphological trait annotation
+  - organismal images
+  - foundation models
+  - insects
+  - biodiversity
+  - computer vision
+license: MIT
+message: "If you find this software helpful in your research, please cite both the software and our paper."
+repository-code: "https://github.com/OSU-NLP-Group/sae-trait-annotation"
+title: "SAE Trait Annotation for Organismal Images"
+version: 1.0.0
+type: software
+preferred-citation:
+  type: conference-paper
+  authors:
+    - family-names: Pahuja
+      given-names: Vardaan
+    - family-names: Stevens
+      given-names: Samuel
+    - family-names: East
+      given-names: Alyson
+    - family-names: Record
+      given-names: Sydne
+    - family-names: Su
+      given-names: Yu
+  title: "Automatic Image-Level Morphological Trait Annotation for Organismal Images"
+  collection-title: "The Twelfth International Conference on Learning Representations"
+  collection-type: proceedings
+  conference:
+    name: "International Conference on Learning Representations (ICLR)"
+  year: 2026
+  url: "https://openreview.net/forum?id=oFRbiaib5Q"
