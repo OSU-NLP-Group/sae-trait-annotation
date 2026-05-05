@@ -5,6 +5,8 @@ Official code release for the ICLR 2026 paper:
 
 🌐 Website: [osu-nlp-group.github.io/sae-trait-annotation](https://osu-nlp-group.github.io/sae-trait-annotation/) 
 
+🤗 Model: [osunlp/sae-trait-annotation](https://huggingface.co/osunlp/sae-trait-annotation)
+
 🤗 Dataset: [osunlp/bioscan-traits](https://huggingface.co/datasets/osunlp/bioscan-traits)
 
 ## Overview
