@@ -221,4 +221,6 @@ S. Record and A. East were additionally supported by NSF Award No. 242918 (EPSCO
 
 **People**
 
-We thank colleagues in the OSU NLP group for valuable feedback. This work was in part conceived at [Funcapalooza](https://github.com/Imageomics/FuncaPalooza-2025/wiki/).
+We thank colleagues in the OSU NLP group for valuable feedback. This work was in part conceived at [Funcapalooza](https://github.com/Imageomics/FuncaPalooza-2025/wiki/). Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation or the US Department of Agriculture.
+
+
