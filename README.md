@@ -204,7 +204,22 @@ booktitle={The Fourteenth International Conference on Learning Representations},
 year={2026},
 url={https://openreview.net/forum?id=oFRbiaib5Q}
 }
-```
+
+Please also cite the source dataset:
+
+```bibtex
+@inproceedings{gharaee2024bioscan5m,
+    title={{BIOSCAN-5M}: A Multimodal Dataset for Insect Biodiversity},
+    booktitle={Advances in Neural Information Processing Systems},
+    author={Zahra Gharaee and Scott C. Lowe and ZeMing Gong and Pablo Millan Arias and Nicholas Pellegrino and Austin T. Wang and Joakim Bruslund Haurum and Iuliia Zarubiieva and Lila Kari and Dirk Steinke and Graham W. Taylor and Paul Fieguth and Angel X. Chang},
+    editor={A. Globerson and L. Mackey and D. Belgrave and A. Fan and U. Paquet and J. Tomczak and C. Zhang},
+    pages={36285--36313},
+    publisher={Curran Associates, Inc.},
+    year={2024},
+    volume={37},
+    url={https://proceedings.neurips.cc/paper_files/paper/2024/file/3fdbb472813041c9ecef04c20c2b1e5a-Paper-Datasets_and_Benchmarks_Track.pdf},
+}
+
 
 ## Acknowledgments
 
