@@ -231,10 +231,10 @@ Please also cite the source dataset:
 
 This research was supported in part by NSF CAREER \#2443149, NSF OAC 2118240, and an Alfred P. Sloan Foundation Fellowship. Computational resources were provided by the Ohio Supercomputer Center.
 
-S. Record and A. East were additionally supported by NSF Award No. 242918 (EPSCOR Research Fellows: Advancing NEON-Enabled Science and Workforce Development at the University of Maine with AI) and Hatch project Award \#MEO-022425 from the USDA National Institute of Food and Agriculture.
+S. Record and A. East were additionally supported by NSF Award No. 242918 (EPSCOR Research Fellows: Advancing NEON-Enabled Science and Workforce Development at the University of Maine with AI) and Hatch project Award \#MEO-022425 from the USDA National Institute of Food and Agriculture. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation or the US Department of Agriculture.
 
 **People**
 
-We thank colleagues in the OSU NLP group for valuable feedback. This work was in part conceived at [Funcapalooza](https://github.com/Imageomics/FuncaPalooza-2025/wiki/). Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation or the US Department of Agriculture.
+We thank colleagues in the OSU NLP group for valuable feedback. This work was in part conceived at [Funcapalooza](https://github.com/Imageomics/FuncaPalooza-2025/wiki/).
 
 
