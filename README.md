@@ -7,7 +7,7 @@ Official code release for the ICLR 2026 paper:
 
 🤗 Model: [osunlp/sae-trait-annotation](https://huggingface.co/osunlp/sae-trait-annotation)
 
-🤗 Dataset: [osunlp/bioscan-traits](https://huggingface.co/datasets/osunlp/bioscan-traits)
+🤗 Dataset: [osunlp/bioscan-traits](https://huggingface.co/datasets/osunlp/bioscan-traits), images from [bioscan-ml/BIOSCAN-5M](https://huggingface.co/datasets/bioscan-ml/BIOSCAN-5M)
 
 ## Overview
 
